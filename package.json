@@ -1,20 +1,24 @@
 {
   "name": "tryton-types",
   "description": "Tryton Types",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "license": "GPL-3.0+",
   "author": "Coopengo <support@coopengo.com>",
   "repository": {
     "type": "git",
     "url": "git://github.com/coopengo/tryton-types.git"
   },
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
-    "beautify": "js-beautify --config .jsbeautifyrc -r *.js",
-    "lint": "jshint -c .jshintrc *.js"
+    "beautify": "js-beautify --config .jsbeautifyrc -r *.js tests/*.js",
+    "lint": "jshint -c .jshintrc *.js tests/*.js",
+    "test": "tap tests/*"
   },
   "dependencies": {
     "lodash": "^4.16.2",
     "moment": "^2.15.1"
+  },
+  "devDependencies": {
+    "tap": "^7.1.2"
   }
 }

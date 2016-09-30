@@ -5,18 +5,25 @@ exports.decimal = function (n) {
 };
 exports.date = function (y, M, D) {
   // nil values are replaced by current
-  var values = {
-    y: y,
-    M: M,
-    D: D,
-    h: 0,
-    m: 0,
-    s: 0,
-    ms: 0
-  };
-  values = _.pickBy(values, (v) => !_.isNil(v));
-  var r = moment();
-  r.set(values);
+  var r;
+  if (_.isString(y)) {
+    r = moment(y, M || 'YYYY-MM-DD');
+    r.startOf('day');
+  }
+  else {
+    var values = {
+      y: y,
+      M: M,
+      D: D,
+      h: 0,
+      m: 0,
+      s: 0,
+      ms: 0
+    };
+    values = _.pickBy(values, (v) => !_.isNil(v));
+    r = moment();
+    r.set(values);
+  }
   r.isDate = true;
   return r;
 };
@@ -38,6 +45,7 @@ exports.time = function (h, m, s, ms) {
 };
 exports.datetime = function (y, M, D, h, m, s, ms, utc) {
   // nil values are replaced by current
+  var cls = utc ? moment.utc : moment;
   var values = {
     y: y,
     M: M,
@@ -47,7 +55,6 @@ exports.datetime = function (y, M, D, h, m, s, ms, utc) {
     s: s,
     ms: ms
   };
-  var cls = utc && moment.utc || moment;
   var r = cls();
   r.set(_.pickBy(values, (v) => !_.isNil(v)));
   r.isDateTime = true;

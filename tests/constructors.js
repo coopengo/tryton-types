@@ -14,6 +14,12 @@ function check(dt, tag, values) {
   t.equal(dt.millisecond(), values[6] || 0);
 }
 
+function testDecimal() {
+  var d = types.decimal(23);
+  t.ok(d instanceof Number);
+  t.equal(d.toString(), '23');
+}
+
 function testDate() {
   var d = types.date(2010, 0, 1);
   check(d, 'isDate', [2010, 0, 1]);
@@ -21,6 +27,8 @@ function testDate() {
   check(types.date(null, 0, 1), 'isDate', [moment()
     .year(), 0, 1
   ]);
+  check(types.date('2000-02-03', 'YYYY-MM-DD'), 'isDate', [2000, 1, 3]);
+  check(types.date('2000-01-01'), 'isDate', [2000, 0, 1]);
 }
 
 function testTime() {
@@ -38,7 +46,12 @@ function testDateTime() {
   check(types.datetime(2016, 4, 23, 17, 51, 56, 999), 'isDateTime', [2016,
     4, 23, 17, 51, 56, 999
   ]);
-  var dt = types.datetime();
+  var dt;
+  dt = types.datetime(2000, 0, 1, 0, 0, 0, 0, true);
+  t.equal(dt.hour(), 1);
+  dt = types.datetime(2000, 6, 1, 0, 0, 0, 0, true);
+  t.equal(dt.hour(), 2);
+  dt = types.datetime();
   var now = moment();
   var diff = now.valueOf() - dt.valueOf();
   t.ok(diff >= 0);
@@ -58,6 +71,7 @@ function testTimeDelta() {
   now.add(d2);
   t.equal((now.dayOfYear() - nd), 1); // tesk KO on 12/31? => no issue
 }
+testDecimal();
 testDate();
 testTime();
 testDateTime();

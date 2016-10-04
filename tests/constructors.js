@@ -2,18 +2,6 @@ var moment = require('moment');
 var types = require('..');
 var t = require('tap');
 
-function check(dt, tag, values) {
-  t.isa(dt, moment);
-  t.equal(dt[tag], true);
-  t.equal(dt.year(), values[0] || 0);
-  t.equal(dt.month(), values[1] || 0);
-  t.equal(dt.date(), values[2] || 1);
-  t.equal(dt.hour(), values[3] || 0);
-  t.equal(dt.minute(), values[4] || 0);
-  t.equal(dt.second(), values[5] || 0);
-  t.equal(dt.millisecond(), values[6] || 0);
-}
-
 function testDecimal() {
   var d = types.decimal(23);
   t.ok(d instanceof Number);
@@ -21,58 +9,110 @@ function testDecimal() {
 }
 
 function testDate() {
-  var d = types.date(2010, 0, 1);
-  check(d, 'isDate', [2010, 0, 1]);
-  t.equal(d.format('YYYY-MM-DD'), '2010-01-01');
-  check(types.date(null, 0, 1), 'isDate', [moment()
-    .year(), 0, 1
-  ]);
-  check(types.date('2000-02-03', 'YYYY-MM-DD'), 'isDate', [2000, 1, 3]);
-  check(types.date('2000-01-01'), 'isDate', [2000, 0, 1]);
+  t.equal(types.DATE_FORMAT, 'YYYY-MM-DD');
+  var d;
+  //
+  d = types.date();
+  var now = moment();
+  t.ok(types.isDate(d));
+  t.equal(d.year(), now.year());
+  t.equal(d.month(), now.month());
+  t.equal(d.date(), now.date());
+  //
+  d = types.date(2010, 0, 1);
+  t.ok(types.isDate(d));
+  t.equal(types.stringify(d), '2010-01-01');
+  //
+  d = types.date('2016-12-31');
+  t.ok(types.isDate(d));
+  t.equal(types.stringify(d), '2016-12-31');
 }
 
 function testTime() {
-  check(types.time(9, 30, 50, 373), 'isTime', [null, null, null, 9, 30,
-    50, 373
-  ]);
-  check(types.time(null, 30, 50, 373), 'isTime', [null, null, null,
-    moment()
-    .hour(), 30,
-    50, 373
-  ]);
+  t.equal(types.TIME_FORMAT, 'HH:mm:ss.SSS');
+  var tm;
+  //
+  tm = types.time();
+  var now = moment();
+  t.ok(types.isTime(tm));
+  t.equal(tm.hours(), now.hours());
+  t.equal(tm.minutes(), now.minutes());
+  t.equal(tm.seconds(), now.seconds());
+  var delta = now.milliseconds() - tm.milliseconds();
+  t.ok(delta >= 0 && delta < 3);
+  //
+  tm = types.time(22, 59, 1, 234);
+  t.ok(types.isTime(tm));
+  t.equal(types.stringify(tm), '22:59:01.234');
+  //
+  tm = types.time('09:15:00.999');
+  t.ok(types.isTime(tm));
+  t.equal(types.stringify(tm), '09:15:00.999');
 }
 
 function testDateTime() {
-  check(types.datetime(2016, 4, 23, 17, 51, 56, 999), 'isDateTime', [2016,
-    4, 23, 17, 51, 56, 999
-  ]);
+  t.equal(types.DATETIME_FORMAT, 'YYYY-MM-DD HH:mm:ss.SSS');
   var dt;
-  dt = types.datetime(2000, 0, 1, 0, 0, 0, 0, true);
-  t.equal(dt.hour(), 1);
-  dt = types.datetime(2000, 6, 1, 0, 0, 0, 0, true);
-  t.equal(dt.hour(), 2);
+  //
   dt = types.datetime();
   var now = moment();
-  var diff = now.valueOf() - dt.valueOf();
-  t.ok(diff >= 0);
-  t.ok(diff < 10);
+  t.ok(types.isDateTime(dt));
+  t.equal(dt.year(), now.year());
+  t.equal(dt.month(), now.month());
+  t.equal(dt.date(), now.date());
+  t.equal(dt.hours(), now.hours());
+  t.equal(dt.minutes(), now.minutes());
+  t.equal(dt.seconds(), now.seconds());
+  var delta = now.milliseconds() - dt.milliseconds();
+  t.ok(delta >= 0 && delta < 3);
+  //
+  dt = types.datetime(2016, 11, 31, 23, 59, 59, 999);
+  t.ok(types.isDateTime(dt));
+  t.equal(types.stringify(dt), '2016-12-31 23:59:59.999');
+  //
+  dt = types.datetime('2015-06-18 22:23:24.874');
+  t.ok(types.isDateTime(dt));
+  t.equal(types.stringify(dt), '2015-06-18 22:23:24.874');
+  //
+  dt = types.datetime(2010, 0, 1, 0, 0, 0, 0, true);
+  t.ok(types.isDateTime(dt));
+  t.equal(dt.hours(), 1);
+  //
+  dt = types.datetime(2010, 6, 1, 0, 0, 0, 0, true);
+  t.ok(types.isDateTime(dt));
+  t.equal(dt.hours(), 2);
 }
 
 function testTimeDelta() {
+  var td;
+  //
+  td = types.timedelta(1, 2, 3, 4, 5, 6, 7);
+  t.ok(types.isTimeDelta(td));
+  var str = types.stringify(td);
+  td = types.timedelta(str);
+  t.ok(types.isTimeDelta(td));
+  t.equal(td.years(), 1);
+  t.equal(td.months(), 2);
+  t.equal(td.days(), 3);
+  t.equal(td.hours(), 4);
+  t.equal(td.minutes(), 5);
+  t.equal(td.seconds(), 6);
+  t.equal(td.milliseconds(), 7);
+  //
+  td = types.timedelta(1);
   var now = moment();
-  var d1 = types.timedelta(1);
-  t.equal(d1.isTimeDelta, true);
-  var ny = now.year();
-  now.add(d1);
-  t.equal((now.year() - ny), 1);
-  var d2 = types.timedelta(null, null, 1);
-  t.equal(d2.isTimeDelta, true);
-  var nd = now.dayOfYear();
-  now.add(d2);
-  t.equal((now.dayOfYear() - nd), 1); // tesk KO on 12/31? => no issue
+  var year = now.year();
+  now.add(td);
+  t.equal(now.year(), year + 1);
+}
+
+function testStringify() {
+  t.throws(types.stringify.bind(null, moment()));
+  t.throws(types.stringify.bind(null, moment.duration()));
 }
 testDecimal();
 testDate();
 testTime();
 testDateTime();
 testTimeDelta();
+testStringify();

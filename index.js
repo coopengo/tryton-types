@@ -4,6 +4,9 @@ var moment = require('moment');
 exports.decimal = function (n) {
   return new Number(n);
 };
+exports.isDecimal = function (n) {
+  return n instanceof Number;
+};
 //
 var DATE_FORMAT = 'YYYY-MM-DD';
 exports.DATE_FORMAT = DATE_FORMAT;

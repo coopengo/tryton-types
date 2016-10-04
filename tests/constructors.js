@@ -4,8 +4,9 @@ var t = require('tap');
 
 function testDecimal() {
   var d = types.decimal(23);
-  t.ok(d instanceof Number);
+  t.ok(types.isDecimal(d));
   t.equal(d.toString(), '23');
+  t.equal(Number(d), 23);
 }
 
 function testDate() {

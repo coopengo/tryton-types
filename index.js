@@ -131,7 +131,10 @@ function isTimeDelta(td) {
 exports.isTimeDelta = isTimeDelta;
 //
 exports.stringify = function (data) {
-  if (isDate(data)) {
+  if (_.isNil(data) || _.isString(data)) {
+    return data;
+  }
+  else if (isDate(data)) {
     return data.format(DATE_FORMAT);
   }
   else if (isTime(data)) {

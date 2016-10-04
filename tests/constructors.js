@@ -108,6 +108,8 @@ function testTimeDelta() {
 }
 
 function testStringify() {
+  t.equal(types.stringify(null), null);
+  t.equal(types.stringify(''), '');
   t.throws(types.stringify.bind(null, moment()));
   t.throws(types.stringify.bind(null, moment.duration()));
 }

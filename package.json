@@ -1,7 +1,7 @@
 {
   "name": "tryton-types",
   "description": "Tryton Types",
-  "version": "4.0.5",
+  "version": "4.2.0",
   "license": "GPL-3.0+",
   "author": "Coopengo <support@coopengo.com>",
   "repository": {
@@ -15,10 +15,10 @@
     "test": "tap tests/*"
   },
   "dependencies": {
-    "lodash": "^4.17.2",
-    "moment": "^2.16.0"
+    "lodash": "^4",
+    "moment": "^2"
   },
   "devDependencies": {
-    "tap": "^8.0.0"
+    "tap": "^8"
   }
 }

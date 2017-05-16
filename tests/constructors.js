@@ -9,6 +9,12 @@ function testDecimal() {
   t.equal(Number(d), 23);
 }
 
+function testBinary() {
+  var d = types.binary('DD');
+  t.ok(types.isBinary(d));
+  t.equal(d.base64, 'DD');
+}
+
 function testDate() {
   t.equal(types.DATE_FORMAT, 'YYYY-MM-DD');
   var d;
@@ -114,6 +120,7 @@ function testStringify() {
   t.throws(types.stringify.bind(null, moment.duration()));
 }
 testDecimal();
+testBinary();
 testDate();
 testTime();
 testDateTime();

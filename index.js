@@ -8,6 +8,16 @@ exports.isDecimal = function (n) {
   return n instanceof Number;
 };
 //
+function Binary(base64) {
+  this.base64 = base64;
+}
+exports.binary = function (base64) {
+  return new Binary(base64);
+};
+exports.isBinary = function (b) {
+  return b instanceof Binary;
+};
+//
 var DATE_FORMAT = 'YYYY-MM-DD';
 exports.DATE_FORMAT = DATE_FORMAT;
 exports.date = function (y, M, D) {

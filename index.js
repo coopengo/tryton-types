@@ -9,7 +9,7 @@ exports.isDecimal = function (n) {
 };
 //
 function Binary(base64) {
-  this.base64 = base64;
+  this.base64 = base64.replace(/\s/g, '');
 }
 exports.binary = function (base64) {
   return new Binary(base64);

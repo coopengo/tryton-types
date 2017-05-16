@@ -10,7 +10,7 @@ function testDecimal() {
 }
 
 function testBinary() {
-  var d = types.binary('DD');
+  var d = types.binary('D D ');
   t.ok(types.isBinary(d));
   t.equal(d.base64, 'DD');
 }

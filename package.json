@@ -1,7 +1,7 @@
 {
   "name": "tryton-types",
   "description": "Tryton Types",
-  "version": "4.2.2",
+  "version": "4.2.3",
   "license": "GPL-3.0+",
   "author": "Coopengo <support@coopengo.com>",
   "repository": {
@@ -10,15 +10,14 @@
   },
   "main": "index.js",
   "scripts": {
-    "beautify": "js-beautify --config .jsbeautifyrc -r *.js tests/*.js",
-    "lint": "jshint -c .jshintrc *.js tests/*.js",
-    "test": "tap tests/*"
+    "test": "standard && tap tests/*"
   },
   "dependencies": {
     "lodash": "^4",
     "moment": "^2"
   },
   "devDependencies": {
-    "tap": "^8"
+    "tap": "^8",
+    "standard": "latest"
   }
 }

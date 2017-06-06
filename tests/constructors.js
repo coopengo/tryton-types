@@ -3,15 +3,22 @@ var types = require('..')
 var t = require('tap')
 
 function testDecimal () {
-  var d = types.decimal(23)
+  var d
+  d = types.decimal(23)
   t.ok(types.isDecimal(d))
-  t.equal(d.get(), 23)
+  t.equal(d.raw(), '23')
+  t.equal(d.val(), 23)
+  d = types.decimal('0200')
+  t.ok(types.isDecimal(d))
+  t.equal(d.raw(), '0200')
+  t.equal(d.val(), 200)
 }
 
 function testBinary () {
   var d = types.binary('D D ')
   t.ok(types.isBinary(d))
-  t.equal(d.get(), 'DD')
+  t.equal(d.raw(), 'D D ')
+  t.equal(d.val(), 'DD')
 }
 
 function testDate () {

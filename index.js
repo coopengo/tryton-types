@@ -1,13 +1,16 @@
 var _ = require('lodash')
 var moment = require('moment')
 
-
 function Decimal (number) {
-  this.number = number
+  this.number = '' + number
 }
 
-Decimal.prototype.get = function () {
+Decimal.prototype.raw = function () {
   return this.number
+}
+
+Decimal.prototype.val = function () {
+  return parseFloat(this.number)
 }
 
 exports.decimal = function (n) {
@@ -18,13 +21,16 @@ exports.isDecimal = function (n) {
   return n instanceof Decimal
 }
 
-
 function Binary (base64) {
-  this.base64 = base64.replace(/\s/g, '')
+  this.base64 = base64
 }
 
-Binary.prototype.get = function () {
+Binary.prototype.raw = function () {
   return this.base64
+}
+
+Binary.prototype.val = function () {
+  return this.base64.replace(/\s/g, '')
 }
 
 exports.binary = function (base64) {
@@ -34,7 +40,6 @@ exports.binary = function (base64) {
 exports.isBinary = function (b) {
   return b instanceof Binary
 }
-
 
 var DATE_FORMAT = 'YYYY-MM-DD'
 exports.DATE_FORMAT = DATE_FORMAT
@@ -61,14 +66,12 @@ exports.date = function (y, M, D) {
   }
   r.isDate = true
   return r
-
 }
 
 function isDate (d) {
   return moment.isMoment(d) && d.isDate
 }
 exports.isDate = isDate
-
 
 var TIME_FORMAT = 'HH:mm:ss.SSS'
 exports.TIME_FORMAT = TIME_FORMAT
@@ -103,7 +106,6 @@ function isTime (t) {
 }
 exports.isTime = isTime
 
-
 var DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss.SSS'
 exports.DATETIME_FORMAT = DATETIME_FORMAT
 
@@ -135,7 +137,6 @@ function isDateTime (dt) {
 
 exports.isDateTime = isDateTime
 
-
 exports.timedelta = function (y, M, d, h, m, s, ms) {
   var r
   if (_.isString(y)) {
@@ -160,7 +161,6 @@ function isTimeDelta (td) {
   return moment.isDuration(td) && td.isTimeDelta
 }
 exports.isTimeDelta = isTimeDelta
-
 
 exports.stringify = function (data) {
   if (_.isNil(data) || _.isString(data)) {

@@ -2,7 +2,11 @@ var _ = require('lodash')
 var moment = require('moment')
 
 function Decimal (number) {
-  this.number = '' + number
+  if (_.isString(number) || _.isNumber(number)) {
+    this.number = '' + number
+  } else {
+    throw new Error('not a number')
+  }
 }
 
 Decimal.prototype.raw = function () {
@@ -22,7 +26,11 @@ exports.isDecimal = function (n) {
 }
 
 function Binary (base64) {
-  this.base64 = base64
+  if (_.isString(base64)) {
+    this.base64 = base64
+  } else {
+    throw new Error('not a string')
+  }
 }
 
 Binary.prototype.raw = function () {

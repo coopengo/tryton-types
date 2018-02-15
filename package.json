@@ -17,7 +17,7 @@
     "moment": "^2"
   },
   "devDependencies": {
-    "tap": "^8",
+    "tap": "latest",
     "standard": "latest"
   }
 }

@@ -126,6 +126,11 @@ function testStringify () {
   t.throws(types.stringify.bind(null, moment.duration()))
 }
 
+function testAddYear () {
+  t.equal(types.stringify(types.addYear('2015-02-28', 1)), '2016-02-28')
+  t.equal(types.stringify(types.addYear('2015-02-28', 1, true)), '2016-02-29')
+}
+
 testDecimal()
 testBinary()
 testDate()
@@ -133,3 +138,4 @@ testTime()
 testDateTime()
 testTimeDelta()
 testStringify()
+testAddYear()

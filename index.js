@@ -185,3 +185,13 @@ exports.stringify = function (data) {
     throw new Error('unsupported data type')
   }
 }
+
+exports.addYear = function (date, nb, stickToEndOfMonth) {
+  // If stickToEndOfMonth is true 28/02/2015 + 1 year = 29/02/2016
+  var nextYear = moment.utc(date, DATE_FORMAT).add(nb, 'y').format(DATE_FORMAT)
+  if (!stickToEndOfMonth || date !== moment(date).endOf('month').format(DATE_FORMAT)) {
+    return nextYear
+  } else {
+    return moment(nextYear).endOf('month').format(DATE_FORMAT)
+  }
+}
